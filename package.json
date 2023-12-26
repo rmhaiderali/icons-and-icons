@@ -1,0 +1,46 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server/index.js",
+    "build": "vite build",
+    "start": "NODE_ENV=production node src/server/index.js",
+    "start:win": "SET NODE_ENV=production& node src/server/index.js",
+    "start:pm2": "NODE_ENV=production pm2 start src/server/index.js -n moments-poster"
+  },
+  "dependencies": {
+    "@react-hook/resize-observer": "^1.2.6",
+    "@react-three/fiber": "^8.15.12",
+    "array-map-to-object": "^0.0.13",
+    "aws4": "^1.12.0",
+    "chalk": "^5.3.0",
+    "cron": "^3.1.6",
+    "date-and-time": "^3.0.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "got": "^14.0.0",
+    "lottie-react": "^2.4.0",
+    "mongoose": "^8.0.2",
+    "path": "^0.12.7",
+    "react": "^18.2.0",
+    "react-detectable-overflow": "^0.7.1",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1",
+    "three": "^0.159.0",
+    "tunnel": "^0.0.6",
+    "vite-express": "^0.12.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "nodemon": "^3.0.2",
+    "vite": "^5.0.0"
+  },
+  "nodemonConfig": {
+    "watch": [
+      ".env",
+      "src/server/",
+      "vite.config.js"
+    ]
+  }
+}
