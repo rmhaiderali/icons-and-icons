@@ -15,7 +15,8 @@ function mergeByProperties(arr) {
     (value, index, self) =>
       index ===
       self.findIndex((t) => {
-        const result = t.Light === value.Light && t.Dark === value.Dark;
+        const result =
+          t.SVG.Light === value.SVG.Light && t.SVG.Dark === value.SVG.Dark;
         if (result && t !== value) t.Regions.push(...value.Regions);
         return result;
       })
