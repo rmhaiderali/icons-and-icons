@@ -20,8 +20,8 @@ async function saveWSH() {
 }
 
 const jobs = [
-  { exp: "1 */6 * * *", fun: saveTBL },
-  { exp: "1 15 * * *", fun: saveWSH },
+  { exp: "1 0/6 * * *", fun: saveTBL },
+  { exp: "1 7/8 * * *", fun: saveWSH },
 ];
 
 if (process.env.CRON.charAt(0) === "Y" && process.env.NODE_ENV === "production")
