@@ -30,7 +30,7 @@ const regions = [
   },
   {
     service: "local",
-    location: "SG",
+    location: process.env.LOCAL_LOCATION || "LOCAL",
   },
   //   {
   //     service: "proxy",

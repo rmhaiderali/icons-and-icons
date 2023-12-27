@@ -1,6 +1,7 @@
 import "dotenv/config.js";
 import "./utils/ensureEnv.js";
 import "./config/database.js";
+import "./utils/cronJobs.js";
 import ViteExpress from "vite-express";
 import app from "./app.js";
 
@@ -12,6 +13,4 @@ const server = app.listen(PORT, () =>
   console.log("server listening on port " + PORT)
 );
 
-ViteExpress.config({ mode: process.env.NODE_ENV });
 ViteExpress.bind(app, server);
-import "./utils/cronJobs.js";
