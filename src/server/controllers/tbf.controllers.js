@@ -93,11 +93,11 @@ async function saveItems(items) {
 
     let insert, afterInsert;
 
-    if (model == "TBL") {
+    if (model === "TBL") {
       insert = { ...item, animation: item.animation.slice(32) };
       afterInsert = { regions, pausesAt: 20 };
     }
-    if (model == "THF") {
+    if (model === "THF") {
       insert = { ...item, hashfetti: item.hashfetti.slice(32) };
       afterInsert = { regions };
     }
@@ -108,7 +108,7 @@ async function saveItems(items) {
       { upsert: true }
     );
 
-    (res.upsertedCount == 1
+    (res.upsertedCount === 1
       ? itemsCategorised.new
       : itemsCategorised.existing
     ).push({
@@ -210,7 +210,7 @@ async function save(req, res) {
             regions: [a[0]],
           })
         );
-        if (b.is_hashfetti_enabled == true)
+        if (b.is_hashfetti_enabled === true)
           arraysOfItems.hashfettis.push({
             model: "THF",
             hashfetti: b.asset_url,

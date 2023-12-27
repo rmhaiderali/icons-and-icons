@@ -115,7 +115,7 @@ function Home() {
   async function clintInfo() {
     let charging, level;
 
-    if (renderer == undefined || vendor == undefined) {
+    if (!renderer || !vendor) {
       let canvas = document.getElementById("glcanvas");
       let gl = canvas.getContext("experimental-webgl");
       try {
@@ -233,7 +233,7 @@ function Home() {
       .querySelector(".clip")
       .style.setProperty(
         "--origin",
-        (getComputedStyle(document.querySelector(".box")).marginLeft == "0px"
+        (getComputedStyle(document.querySelector(".box")).marginLeft === "0px"
           ? document.querySelector("header").clientWidth - 40
           : parseInt(
               getComputedStyle(document.querySelector(".box")).marginLeft

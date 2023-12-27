@@ -37,7 +37,7 @@ export default function (props) {
   //   )
   //     // .then((response) => response.json())
   //     // .then((json) => {
-  //     //   if (json[0] == true)
+  //     //   if (json[0] === true)
   //     // })
   //     .catch((err) => {
   //       console.log(err);

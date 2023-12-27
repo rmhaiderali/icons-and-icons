@@ -87,7 +87,7 @@ async function saveItems(items) {
       { upsert: true }
     );
 
-    (res.upsertedCount == 1
+    (res.upsertedCount === 1
       ? itemsCategorised.new
       : itemsCategorised.existing
     ).push(item);
@@ -149,7 +149,7 @@ function save(req, res) {
     : allCountries;
 
   const requestDate = (
-    req.headers.yesterday == 1 ? new Date(Date.now() - 79200000) : new Date()
+    req.headers.yesterday === "Y" ? new Date(Date.now() - 79200000) : new Date()
   ).toLocaleString("en-PK", { timeZone: "Etc/GMT-14" }); // DD/MM/YYYY
 
   const count = new Proxy([], {

@@ -12,7 +12,7 @@ function formatedDate(start, end) {
   else if (format(start, "MMM") !== format(end, "MMM"))
     return format(start, "D MMM") + " to " + format(end, "D MMM YYYY");
   //
-  else if (+format(start, "D") + 1 == format(end, "D"))
+  else if (+format(start, "D") + 1 === +format(end, "D"))
     return format(start, "D") + " & " + format(end, "D MMM YYYY");
   //
   else if (format(start, "D") !== format(end, "D"))
