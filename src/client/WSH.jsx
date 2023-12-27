@@ -4,7 +4,7 @@ import ScrollingTitle from "./ScrollingTitle";
 import Context from "./Context";
 
 export default function (props) {
-  const global = useContext(Context);
+  const { wallpaperSize } = useContext(Context);
 
   const href = () => {
     let hour = "0700";
@@ -16,7 +16,7 @@ export default function (props) {
         "https://www.bing.com/search?q=" +
         props.Query.toLowerCase() +
         "&filters=HpDate:%22" +
-        props.Date +
+        date.format(new Date(props.Date), "YYYYMMDD") +
         "_" +
         hour +
         "%22"
@@ -50,11 +50,7 @@ export default function (props) {
     setIsDownloaded(true);
     try {
       const response = await fetch(
-        "https://th.bing.com/th?id=OHR." +
-          props.JPG +
-          "_" +
-          global.WallpaperSize +
-          ".jpg"
+        `https://th.bing.com/th?id=OHR.${props.JPG}_${wallpaperSize}.jpg`
       );
       const b = await response.blob();
       const e = document.createElement("a");
@@ -171,7 +167,9 @@ export default function (props) {
               ? "https://ueso.000webhostapp.com/svgs/dsb/" +
                 props.SVG.Light.replace("@", "") +
                 ".svg"
-              : "https://th.bing.com/th?id=ODSWG." + props.SVG.Light + "&pid=dsb"
+              : "https://th.bing.com/th?id=ODSWG." +
+                props.SVG.Light +
+                "&pid=dsb"
           }
           onError={({ currentTarget }) => (currentTarget.style.opacity = "0")}
         />
