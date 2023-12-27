@@ -16,7 +16,7 @@ export default function (props) {
         "https://www.bing.com/search?q=" +
         props.Query.toLowerCase() +
         "&filters=HpDate:%22" +
-        props.Date +
+        date.format(new Date(props.Date), "YYYYMMDD") +
         "_" +
         hour +
         "%22"
