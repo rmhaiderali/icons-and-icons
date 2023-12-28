@@ -1,9 +1,6 @@
 import date from "date-and-time";
 import { format, mergeByProperties } from "../utils/wsh.utils.js";
-import {
-  orderSort,
-  millisecondsToNextMidnight,
-} from "../utils/common.utils.js";
+import { orderSort, millisecondsToNextDay } from "../utils/common.utils.js";
 import remote from "../utils/remote.js";
 import WSH from "../models/wsh.models.js";
 import { order, userAgent, allCountries } from "../constants/wsh.constants.js";
@@ -99,17 +96,18 @@ async function main(req, res) {
   if (process.env.WSH_LOG.charAt(0) === "Y") remote(req, 1);
 
   if (process.env.NODE_ENV === "production") {
+    const mstonextdayplus2m = millisecondsToNextDay("Etc/GMT-14", 12e4);
+
     // res.set(
     //   "Cache-Time-Left",
-    //   new Date(millisecondsToNextMidnight("Etc/GMT+0"))
-    //     .toISOString()
-    //     .substring(11, 19)
+    //   Math.floor(mstonextdayplus2m / 864e5) +
+    //     "d " +
+    //     new Date(mstonextdayplus2m).toISOString().substring(11, 19)
     // );
 
     res.set(
       "Cache-Control",
-      "public, max-age=" +
-        millisecondsToNextMidnight("Etc/GMT+0").toString().slice(0, -3)
+      "public, max-age=" + mstonextdayplus2m.toString().slice(0, -3)
     );
 
     // res.set(
