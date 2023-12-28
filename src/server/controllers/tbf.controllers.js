@@ -5,10 +5,7 @@ import {
   toLocaleStringPK,
   mergeByProperties,
 } from "../utils/tbf.utils.js";
-import {
-  orderSort,
-  millisecondsToNextMidnight,
-} from "../utils/common.utils.js";
+import { orderSort, millisecondsToNextDay } from "../utils/common.utils.js";
 import proxies from "../utils/proxies.js";
 import remote from "../utils/remote.js";
 import TBL from "../models/tbl.models.js";
@@ -126,17 +123,18 @@ async function main(req, res) {
   if (process.env.TBF_LOG.charAt(0) === "Y") remote(req, 1);
 
   if (process.env.NODE_ENV === "production") {
+    const mstonextdayplus2m = millisecondsToNextDay("Etc/GMT+0", 12e4);
+
     // res.set(
     //   "Cache-Time-Left",
-    //   new Date(millisecondsToNextMidnight("Etc/GMT+0"))
-    //     .toISOString()
-    //     .substring(11, 19)
+    //   Math.floor(mstonextdayplus2m / 864e5) +
+    //     "d " +
+    //     new Date(mstonextdayplus2m).toISOString().substring(11, 19)
     // );
 
     res.set(
       "Cache-Control",
-      "public, max-age=" +
-        millisecondsToNextMidnight("Etc/GMT+0").toString().slice(0, -3)
+      "public, max-age=" + mstonextdayplus2m.toString().slice(0, -3)
     );
 
     // res.set(

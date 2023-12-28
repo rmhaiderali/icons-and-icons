@@ -1,15 +1,10 @@
-function changeTimezone(date, ianatz) {
-  const invdate = new Date(date.toLocaleString("en-US", { timeZone: ianatz }));
-  // two min behind actual time
-  const diff = date.getTime() - (invdate.getTime() - 120000);
-  return new Date(date.getTime() - diff);
-}
+import { DateTime } from "luxon";
 
-function millisecondsToNextMidnight(tz) {
-  const now = changeTimezone(new Date(), tz),
-    then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-  // milliseconds left = 86400000 - difference
-  return 86400000 - (now.getTime() - then.getTime());
+function millisecondsToNextDay(tz, offsetms = 0) {
+  const now = DateTime.now().setZone(tz).plus({ milliseconds: -offsetms });
+  const tomorrow = now.plus({ days: 1 }).startOf("day");
+  console.log({ now, tomorrow });
+  return tomorrow.diff(now).as("milliseconds");
 }
 
 function orderSort(order, array, property) {
@@ -20,4 +15,4 @@ function orderSort(order, array, property) {
   );
 }
 
-export { millisecondsToNextMidnight, orderSort };
+export { millisecondsToNextDay, orderSort };
