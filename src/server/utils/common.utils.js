@@ -3,7 +3,6 @@ import { DateTime } from "luxon";
 function millisecondsToNextDay(tz, offsetms = 0) {
   const now = DateTime.now().setZone(tz).plus({ milliseconds: -offsetms });
   const tomorrow = now.plus({ days: 1 }).startOf("day");
-  console.log({ now, tomorrow });
   return tomorrow.diff(now).as("milliseconds");
 }
 

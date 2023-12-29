@@ -27,5 +27,5 @@ const jobs = [
 if (process.env.CRON.charAt(0) === "Y" && process.env.NODE_ENV === "production")
   for (const job of jobs) {
     const result = new CronJob(job.exp, job.fun, null, true, "Asia/Karachi");
-    console.log(chalk.magenta("=> cron job started", result.cronTime.source));
+    console.log(chalk.magenta("=> cron job started"), result.cronTime);
   }
