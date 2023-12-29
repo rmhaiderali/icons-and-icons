@@ -182,9 +182,8 @@ async function save(req, res) {
     set: function (target, property, value, receiver) {
       target[property] = value;
 
-      if (property === "length" && target.length === regions.length) {
+      if (property === "length" && target.length === regions.length)
         countComplete();
-      }
 
       return true;
     },
