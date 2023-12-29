@@ -4,8 +4,9 @@
     "dev": "nodemon src/server/index.js",
     "build": "vite build",
     "start": "NODE_ENV=production node src/server/index.js",
-    "start:win": "SET NODE_ENV=production& node src/server/index.js",
-    "start:pm2": "NODE_ENV=production pm2 start src/server/index.js -n icons-and-icons"
+    "win:start": "SET NODE_ENV=production& node src/server/index.js",
+    "pm2:start": "NODE_ENV=production pm2 start src/server/index.js -n icons-and-icons",
+    "pm2:logs": "pm2 logs icons-and-icons --lines 100"
   },
   "dependencies": {
     "@react-hook/resize-observer": "^1.2.6",
