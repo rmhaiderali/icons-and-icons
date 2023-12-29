@@ -2,6 +2,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+noscript {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
 @font-face {
   font-family: isc;
   src: url(/isc4.ttf);
@@ -502,7 +510,7 @@ footer > div > a > svg {
   --theme-scrollbar-track: #171717;
 }
 
-::selection {
+:not(noscript)::selection {
   color: var(--theme-background);
   background-color: var(--theme-primary);
 }
