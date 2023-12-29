@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import mapToObject from "array-map-to-object";
 import date from "date-and-time";
@@ -10,13 +10,15 @@ import Popup from "./Popup";
 
 const components = { TBL, THF, WSH };
 
-let buttonEnabled = true,
-  scrollTop = 0,
-  scrollLeft = 0,
-  renderer = null,
-  vendor = null;
-
 function Home() {
+  const global = useRef({
+    scrollTop: 0,
+    scrollLeft: 0,
+    vendor: null,
+    renderer: null,
+    buttonEnabled: true,
+  });
+
   const navigate = useNavigate();
 
   const { service, year, month } = useParams();
@@ -115,16 +117,16 @@ function Home() {
   async function clintInfo() {
     let charging, level;
 
-    if (!renderer || !vendor) {
+    if (!global.current.renderer || !global.current.vendor) {
       let canvas = document.getElementById("glcanvas");
       let gl = canvas.getContext("experimental-webgl");
       try {
         let ext = gl.getExtension("WEBGL_debug_renderer_info");
-        renderer = gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);
-        vendor = gl.getParameter(ext.UNMASKED_VENDOR_WEBGL);
+        global.current.renderer = gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);
+        global.current.vendor = gl.getParameter(ext.UNMASKED_VENDOR_WEBGL);
       } catch (e) {
-        renderer = gl.getParameter(gl.RENDERER);
-        vendor = gl.getParameter(gl.VENDOR);
+        global.current.renderer = gl.getParameter(gl.RENDERER);
+        global.current.vendor = gl.getParameter(gl.VENDOR);
       }
     }
 
@@ -139,8 +141,8 @@ function Home() {
       "Battery-Level": level,
       "CPU-Cores": navigator.hardwareConcurrency,
       "Device-Memory": navigator.deviceMemory,
-      "Graphics-Renderer": renderer,
-      "Graphics-Vendor": vendor,
+      "Graphics-Renderer": global.current.renderer,
+      "Graphics-Vendor": global.current.vendor,
       "Max-Touch-Points": navigator.maxTouchPoints,
     };
   }
@@ -216,30 +218,30 @@ function Home() {
       ? JSON.parse(localStorage.getItem("dark"))
       : window.matchMedia("(prefers-color-scheme: dark)").matches
   );
+
   const handleTheme = () => {
-    if (!buttonEnabled) return;
-    buttonEnabled = false;
+    if (!global.current.buttonEnabled) return;
+    global.current.buttonEnabled = false;
 
     setTheme(!theme);
     localStorage.setItem("dark", !theme);
 
+    const app = document.querySelector(".app");
+
     if (!preview) {
-      document.querySelector(".app").classList.toggle("dark");
-      buttonEnabled = true;
-      return;
+      app.classList.toggle("dark");
+      return (global.current.buttonEnabled = true);
     }
+
+    const appWidth = app.clientWidth;
+    const headerWidth = document.querySelector("header").clientWidth;
+    const boxMarginX = Math.max(0, (appWidth - headerWidth) / 2);
 
     document
       .querySelector(".clip")
       .style.setProperty(
         "--origin",
-        (getComputedStyle(document.querySelector(".box")).marginLeft === "0px"
-          ? document.querySelector("header").clientWidth - 40
-          : parseInt(
-              getComputedStyle(document.querySelector(".box")).marginLeft
-            ) + 1680) -
-          parseInt(document.querySelector(".app").scrollLeft) +
-          "px"
+        boxMarginX + headerWidth - 40 - app.scrollLeft + "px"
       );
 
     document
@@ -248,20 +250,18 @@ function Home() {
         "--side",
         parseInt(
           Math.sqrt(
-            parseInt(getComputedStyle(document.body).width) ** 2 +
-              parseInt(getComputedStyle(document.body).height) ** 2
+            document.body.clientWidth ** 2 + document.body.clientHeight ** 2
           )
         ) + "px"
       );
 
     document.body.classList.add("pause");
 
-    document.querySelector(".clip").innerHTML =
-      document.querySelector(".app").outerHTML;
+    document.querySelector(".clip").innerHTML = app.outerHTML;
     // [...document.querySelectorAll(".clip img")].map((e) => (e.outerHTML = ""));
     scrollbind(document.querySelector(".clip .app"));
-    document.querySelector(".clip .app").scrollTop = scrollTop;
-    document.querySelector(".clip .app").scrollLeft = scrollLeft;
+    document.querySelector(".clip .app").scrollTop = global.current.scrollTop;
+    document.querySelector(".clip .app").scrollLeft = global.current.scrollLeft;
     toggle();
     document.querySelector(".clip").classList.add("anim");
     if (theme) document.querySelector(".clip").classList.add("reverse");
@@ -270,14 +270,15 @@ function Home() {
   const onAnimationEnd = () => {
     document.querySelector(".clip").classList.remove("anim");
     if (!theme) document.querySelector(".clip").classList.remove("reverse");
+    const app = document.querySelector(".app");
     toggle();
-    scrollbind(document.querySelector(".app"));
-    document.querySelector(".app").scrollTop = scrollTop;
-    document.querySelector(".app").scrollLeft = scrollLeft;
+    scrollbind(app);
+    app.scrollTop = global.current.scrollTop;
+    app.scrollLeft = global.current.scrollLeft;
     document.querySelector(".clip").innerHTML = "";
 
     document.body.classList.remove("pause");
-    buttonEnabled = true;
+    global.current.buttonEnabled = true;
   };
 
   useEffect(() => {
@@ -287,11 +288,11 @@ function Home() {
 
   const scrollbind = (e) => {
     e.addEventListener("scroll", function () {
-      scrollTop = this.scrollTop;
-      scrollLeft = this.scrollLeft;
+      global.current.scrollTop = this.scrollTop;
+      global.current.scrollLeft = this.scrollLeft;
       Array.from(document.querySelectorAll(".app")).forEach((e) => {
-        e.scrollTop = scrollTop;
-        e.scrollLeft = scrollLeft;
+        e.scrollTop = global.current.scrollTop;
+        e.scrollLeft = global.current.scrollLeft;
       });
     });
   };
