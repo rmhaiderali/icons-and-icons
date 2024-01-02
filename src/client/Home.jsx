@@ -1,14 +1,15 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, lazy, Suspense } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import mapToObject from "array-map-to-object";
 import date from "date-and-time";
 import Footer from "./Footer";
-import TBL from "./TBL.jsx";
-import THF from "./THF.jsx";
-import WSH from "./WSH.jsx";
 import Popup from "./Popup";
 
-const components = { TBL, THF, WSH };
+const components = {
+  TBL: lazy(() => import("./TBL.jsx")),
+  THF: lazy(() => import("./THF.jsx")),
+  WSH: lazy(() => import("./WSH.jsx")),
+};
 
 export default function () {
   const global = useRef({
@@ -393,7 +394,7 @@ export default function () {
               </svg>
             </div>
           </header>
-          {view}
+          <Suspense fallback={loading}>{view}</Suspense>
           <Footer />
           <Popup />
         </div>

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
+import ScrollingTitle from "./ScrollingTitle";
 import Context from "./Context";
 import { formatedDate } from "./Common";
-import ScrollingTitle from "./ScrollingTitle";
 
 export default function (props) {
   const twitterCDN = "https://abs.twimg.com/hashflags/";

@@ -1,27 +1,21 @@
 import { useState, useContext } from "react";
-import date from "date-and-time";
 import ScrollingTitle from "./ScrollingTitle";
 import Context from "./Context";
+import date from "date-and-time";
+import { DateTime } from "luxon";
 
 export default function (props) {
   const { wallpaperSize } = useContext(Context);
 
   const href = () => {
-    let hour = "0700";
-    if (props.Date > "20230323") hour = "0700";
-    else if (props.Date > "20221105") hour = "0800";
+    const formatedDate = DateTime.fromISO(props.Date, { setZone: true })
+      .setZone("US/Pacific", { keepLocalTime: true })
+      .toFormat("\"yyyyMMdd_ZZZ\"")
+      .replace(/\+|-/, "");
 
-    if (props.IOTD === true)
-      return (
-        "https://www.bing.com/search?q=" +
-        props.Query.toLowerCase() +
-        "&filters=HpDate:%22" +
-        date.format(new Date(props.Date), "YYYYMMDD") +
-        "_" +
-        hour +
-        "%22"
-      );
-    else return "https://www.bing.com/search?q=" + props.Query.toLowerCase();
+    const url = "https://www.bing.com/search?q=" + props.Query.toLowerCase();
+
+    return url + (props.IOTD === true ? "&filters=HpDate:" + formatedDate : "");
   };
 
   // function post() {
