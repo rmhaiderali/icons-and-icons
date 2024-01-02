@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import Lottie from "lottie-react";
-import { formatedDate } from "./Common";
 import ScrollingTitle from "./ScrollingTitle";
+import { formatedDate } from "./Common";
+import Lottie from "lottie-react";
 
 export default function (props) {
   const twitterCDN = "https://abs.twimg.com/hashflags/";

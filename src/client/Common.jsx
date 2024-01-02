@@ -1,6 +1,7 @@
-const { format } = import("date-and-time");
+import date from "date-and-time";
 
 function formatedDate(start, end) {
+  const { format } = date;
   //
   start = new Date(start ?? 0);
   end = new Date(end ?? 0);
