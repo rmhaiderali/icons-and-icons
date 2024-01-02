@@ -10,7 +10,7 @@ import Popup from "./Popup";
 
 const components = { TBL, THF, WSH };
 
-function Home() {
+export default function () {
   const global = useRef({
     scrollTop: 0,
     scrollLeft: 0,
@@ -20,6 +20,7 @@ function Home() {
   });
 
   const navigate = useNavigate();
+  const replaceAndNavigate = (to) => navigate(to, { replace: true });
 
   const { service, year, month } = useParams();
 
@@ -40,8 +41,6 @@ function Home() {
       reverseItems: false,
     },
   };
-
-  if (service && !Object.keys(services).includes(service)) navigate("/");
 
   const loading = (
     <div className="loading grow">
@@ -85,16 +84,25 @@ function Home() {
   }
 
   function renderButtons(name, data) {
-    if (name === "Service")
+    if (name === "Service") {
+      replaceAndNavigate("/");
       data = mapToObject(data, (service) => [
         service,
         services[service].fullName,
       ]);
-    else if (name === "Month")
+    }
+    //
+    else if (name === "Year") {
+      replaceAndNavigate(["", service].join("/"));
+    }
+    //
+    else if (name === "Month") {
+      replaceAndNavigate(["", service, year].join("/"));
       data = mapToObject(data, (month) => [
         month,
         date.format(new Date(year, month - 1), "MMM YYYY"),
       ]);
+    }
 
     const isDataArray = Array.isArray(data);
 
@@ -176,7 +184,9 @@ function Home() {
   }
 
   useEffect(() => {
-    if (!service) renderButtons("Service", Object.keys(services));
+    if (!Object.keys(services).includes(service))
+      renderButtons("Service", Object.keys(services));
+    //
     else fetchData(service, year, month);
   }, [service, year, month]);
 
@@ -314,7 +324,12 @@ function Home() {
       <div className={"app" + (scrollbar ? " scrollbar" : "")}>
         <div className="box">
           <header>
-            <Link to="/">
+            <Link
+              to={
+                window.location.pathname.split("/").slice(0, -1).join("/") ||
+                "/"
+              }
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32">
                 <path
                   fill="var(--theme-primary)"
@@ -387,5 +402,3 @@ function Home() {
     </>
   );
 }
-
-export default Home;

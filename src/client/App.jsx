@@ -5,8 +5,8 @@ import "./App.css";
 import Renderer from "./THFRenderer";
 import Context from "./Context";
 
-function App() {
-  const {hashfetti} = useContext(Context);
+export default function () {
+  const { hashfetti } = useContext(Context);
 
   return (
     <>
@@ -19,5 +19,3 @@ function App() {
     </>
   );
 }
-
-export default App;

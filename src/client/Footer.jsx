@@ -1,11 +1,11 @@
 import date from "date-and-time";
 
-function Footer() {
+export default function () {
   return (
     <footer>
       <p>
-        {"Changes were last made on " +
-          date.format(new Date(BUILD_TIMESTAMP), "MMM DD YYYY")}
+        {"Build " +
+          date.format(new Date(BUILD_TIMESTAMP), "YYYY.MM.DD HH:mm:ss")}
       </p>
       <div>
         <a
@@ -21,5 +21,3 @@ function Footer() {
     </footer>
   );
 }
-
-export default Footer;
