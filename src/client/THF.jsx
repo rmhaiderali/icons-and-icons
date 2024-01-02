@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import ScrollingTitle from "./ScrollingTitle";
 import Context from "./Context";
 import { formatedDate } from "./Common";
