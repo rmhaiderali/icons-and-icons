@@ -4,7 +4,7 @@
     "build": "vite build",
     "dev": "nodemon src/server/index.js",
     "unx:start": "NODE_ENV=production node src/server/index.js",
-    "win:start": "SET NODE_ENV=production& node src/server/index.js",
+    "win:start": "SET NODE_ENV=production&& node src/server/index.js",
     "pm2:start": "NODE_ENV=production pm2 start src/server/index.js -n icons-and-icons",
     "pm2:logs": "pm2 logs icons-and-icons --lines 100"
   },
@@ -27,7 +27,7 @@
     "react-detectable-overflow": "^0.7.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.1",
-    "three": "^0.159.0",
+    "three": "^0.160.0",
     "tunnel": "^0.0.6",
     "vite-express": "^0.12.0"
   },
