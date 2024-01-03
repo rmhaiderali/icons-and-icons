@@ -6,9 +6,9 @@ import Footer from "./Footer";
 import Popup from "./Popup";
 
 const components = {
-  TBL: lazy(() => import("./TBL.jsx")),
-  THF: lazy(() => import("./THF.jsx")),
-  WSH: lazy(() => import("./WSH.jsx")),
+  TBL: lazy(() => import("./TBL")),
+  THF: lazy(() => import("./THF")),
+  WSH: lazy(() => import("./WSH")),
 };
 
 export default function () {
@@ -68,6 +68,7 @@ export default function () {
   let [view, setView] = useState(loading);
 
   function renderItems(items, Component) {
+    replaceAndNavigate(["", service, year, month].join("/"));
     const { sortBy, reverseItems } = services[service];
 
     items.sort((a, b) => (b[sortBy] > a[sortBy] ? -1 : 0));
