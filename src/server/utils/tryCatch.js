@@ -1,15 +1,15 @@
 export function tryCatch(tryer) {
   try {
-    return { data: tryer(), error: null };
+    return [tryer(), null];
   } catch (error) {
-    return { data: null, error };
+    return [null, error];
   }
 }
 
 export async function asyncTryCatch(tryer) {
   try {
-    return { data: await tryer(), error: null };
+    return [await tryer(), null];
   } catch (error) {
-    return { data: null, error };
+    return [null, error];
   }
 }

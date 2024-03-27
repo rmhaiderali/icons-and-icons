@@ -35,5 +35,5 @@ const TBLSchema = new Schema(
   { versionKey: false }
 );
 
-const TBL = mongoose.model("tbl", TBLSchema);
-export default TBL;
+delete mongoose.connection.models["tbl"];
+export default mongoose.model("tbl", TBLSchema);

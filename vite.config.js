@@ -1,10 +1,23 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import useExpressInVite from "./src/server/utils/useExpressInVite";
+import { vitePlugin as multipageFallback } from "multipage-fallback";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  build: { target: "es6" },
+  appType: "mpa",
+  server: { port: 3005 },
+  plugins: [
+    useExpressInVite("/src/server/app.js"),
+    multipageFallback(),
+    react(),
+  ],
+  build: {
+    target: "es6",
+    rollupOptions: {
+      input: ["/index.html", "/tools/tbf/index.html"],
+    },
+  },
   define: {
     BUILD_TIMESTAMP: Date.now(),
   },

@@ -1,4 +1,5 @@
 import chalk from "chalk";
+
 const envs = [
   "KEY",
   "CRON", // Y/N
@@ -15,7 +16,7 @@ const envs = [
 
 for (const env of envs) {
   if (!process.env.hasOwnProperty(env)) {
-    const message = "Add \"" + env + "\" in .env before starting server.";
+    const message = 'Add "' + env + '" in .env before starting server.';
     throw new Error(chalk.red(message));
   }
 }

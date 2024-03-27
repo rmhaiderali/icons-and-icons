@@ -1,9 +1,10 @@
 import date from "date-and-time";
-import { format, mergeByProperties } from "../utils/wsh.utils.js";
-import { orderSort, millisecondsToNextDay } from "../utils/common.utils.js";
 import remote from "../utils/remote.js";
 import WSH from "../models/wsh.models.js";
+import { format, mergeByProperties } from "../utils/wsh.utils.js";
+import { orderSort, millisecondsToNextDay } from "../utils/common.utils.js";
 import { order, userAgent, allCountries } from "../constants/wsh.constants.js";
+import formatString from "../utils/formatString.js";
 
 async function getItems(start, end) {
   // aggregate alternate => find({}, { projection: { _id: 0, JPG: 0, SVG: 0 } })
@@ -172,10 +173,12 @@ function save(req, res) {
   };
 
   async function download(day, month, year, country) {
-    const result = await fetch(
-      `https://www.bing.com/DSB?clientDateTime=${month}%2F${day}%2F${year}&cc=${country}&dsbschemaversion=1.1`,
-      { headers: { "User-Agent": userAgent } }
-    );
+    const url =
+      "https://www.bing.com/DSB?clientDateTime={0}%2F{1}%2F{2}&cc={3}&dsbschemaversion=1.1";
+
+    const result = await fetch(formatString(url, month, day, year, country), {
+      headers: { "User-Agent": userAgent },
+    });
 
     const data = await result.json();
     const cc = data.ContentCollection[0];

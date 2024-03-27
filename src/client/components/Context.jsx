@@ -1,4 +1,4 @@
-import { createContext, useRef, useState } from "react";
+import { createContext, useRef, useState, useEffect } from "react";
 
 const Context = createContext();
 export default Context;
@@ -18,14 +18,7 @@ export function ContextProvider(props) {
     setHashfetti(image);
   };
 
-  // zzzzzzzzzz  wsh  zzzzzzzzzz
-  const wallpaperSize =
-    localStorage.getItem("wallpaperSize") ||
-    navigator.userAgent.match(/(Android|iPhone)/)
-      ? "1080x1920"
-      : "1920x1080";
-
-  const value = { hashfetti, changeHashfetti, wallpaperSize };
+  const value = { hashfetti, changeHashfetti };
 
   return <Context.Provider value={value}>{props.children}</Context.Provider>;
 }

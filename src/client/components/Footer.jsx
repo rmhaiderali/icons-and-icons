@@ -3,10 +3,7 @@ import date from "date-and-time";
 export default function () {
   return (
     <footer>
-      <p>
-        {"Build " +
-          date.format(new Date(BUILD_TIMESTAMP), "YYYY.MM.DD HH:mm:ss")}
-      </p>
+      <p>{date.format(new Date(BUILD_TIMESTAMP), "MMMM DD YYYY hh:mm A")}</p>
       <div>
         <a
           href="https://github.com/rmhaiderali/icons-and-icons"

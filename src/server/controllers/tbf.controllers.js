@@ -1,16 +1,13 @@
 import date from "date-and-time";
-import {
-  format,
-  activateToken,
-  toLocaleStringPK,
-  mergeByProperties,
-} from "../utils/tbf.utils.js";
-import { orderSort, millisecondsToNextDay } from "../utils/common.utils.js";
 import proxies from "../utils/proxies.js";
 import remote from "../utils/remote.js";
 import TBL from "../models/tbl.models.js";
 import THF from "../models/thf.models.js";
+import { format, activateToken } from "../utils/tbf.utils.js";
+import { toLocaleStringPK, mergeByProperties } from "../utils/tbf.utils.js";
+import { orderSort, millisecondsToNextDay } from "../utils/common.utils.js";
 import { regions, order, line } from "../constants/tbf.constants.js";
+import formatString from "../utils/formatString.js";
 
 const models = { TBL, THF };
 
@@ -200,7 +197,7 @@ async function save(req, res) {
           arraysOfItems.likes.push({
             model: "TBL",
             animation: animation.asset_url,
-            hashmoji: b.asset_url ? b.asset_url : null,
+            hashmoji: b.asset_url ?? null,
             hashtags: [b.hashtag],
             startsAt: b.starting_timestamp_ms,
             endsAt: b.ending_timestamp_ms,

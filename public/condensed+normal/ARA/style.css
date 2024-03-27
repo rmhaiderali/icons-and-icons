@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "Instagram Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url(/condensed+normal/ARA/InstagramSansCondensedARA400.woff2) format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F;
+}

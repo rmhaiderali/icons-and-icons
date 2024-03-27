@@ -39,5 +39,5 @@ const WSHSchema = new Schema(
   { versionKey: false }
 );
 
-const WSH = mongoose.model("wsh", WSHSchema);
-export default WSH;
+delete mongoose.connection.models["wsh"];
+export default mongoose.model("wsh", WSHSchema);

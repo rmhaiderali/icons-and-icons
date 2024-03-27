@@ -2,11 +2,11 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "nodemon src/server/index.js",
-    "unx:start": "NODE_ENV=production node src/server/index.js",
-    "win:start": "SET NODE_ENV=production&& node src/server/index.js",
-    "pm2:start": "NODE_ENV=production pm2 start src/server/index.js -n icons-and-icons",
-    "pm2:logs": "pm2 logs icons-and-icons --lines 100"
+    "dev": "vite dev --host",
+    "start": "node src/server/index.js",
+    "pm2:s": "pm2 start src/server/index.js -n icons-and-icons",
+    "pm2:l": "pm2 logs icons-and-icons --lines 100",
+    "pm2:d": "pm2 delete icons-and-icons"
   },
   "dependencies": {
     "@react-hook/resize-observer": "^1.2.6",
@@ -22,27 +22,20 @@
     "lottie-react": "^2.4.0",
     "luxon": "^3.4.4",
     "mongoose": "^8.0.2",
+    "multipage-fallback": "^0.0.1",
     "path": "^0.12.7",
     "react": "^18.2.0",
     "react-detectable-overflow": "^0.7.1",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.13",
     "react-router-dom": "^6.20.1",
     "three": "^0.160.0",
-    "tunnel": "^0.0.6",
-    "vite-express": "^0.12.0"
+    "tunnel": "^0.0.6"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "nodemon": "^3.0.2",
-    "vite": "^5.0.0"
-  },
-  "nodemonConfig": {
-    "watch": [
-      ".env",
-      "src/server/",
-      "vite.config.js"
-    ]
+    "@vitejs/plugin-react-swc": "^3.6.0",
+    "vite": "^5.1.4"
   }
 }

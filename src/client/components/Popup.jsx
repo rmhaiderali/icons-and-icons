@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./Popup.css";
 
 export default function () {
   const [event, setEvent] = useState(null);
@@ -45,7 +44,7 @@ export default function () {
           <div className="css-1dbjc4n r-18u37iz r-1wtj0ep r-1t982j2 r-1atloto">
             <div
               onClick={close}
-              onKeyPress={(e) => e.key === "Enter" && close()}
+              onKeyDown={(e) => e.key === "Enter" && this.onClick()}
               tabIndex="0"
               className="u3 css-18t94o4 css-1dbjc4n r-sdzlij r-1phboty r-rs99b7 r-15zivkp r-1ii58gl r-25kp3t r-1j3t67a r-o7ynqc r-6416eg r-lrvibr"
             >
@@ -55,7 +54,7 @@ export default function () {
             </div>
             <div
               onClick={install}
-              onKeyPress={(e) => e.key === "Enter" && install()}
+              onKeyDown={(e) => e.key === "Enter" && this.onClick()}
               tabIndex="0"
               className="u4 css-18t94o4 css-1dbjc4n r-42olwf r-sdzlij r-1phboty r-rs99b7 r-15zivkp r-1ii58gl r-25kp3t r-1j3t67a r-o7ynqc r-6416eg r-lrvibr"
             >

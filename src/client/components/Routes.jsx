@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./Home";
-import "./App.css";
+import App from "./App";
 import Renderer from "./THFRenderer";
 import Context from "./Context";
 
@@ -13,7 +12,7 @@ export default function () {
       <Renderer imageUrl={hashfetti} />
       <BrowserRouter>
         <Routes>
-          <Route path="/:service?/:year?/:month?/*" element={<Home />} />
+          <Route path="/:service?/:year?/:month?/*" element={<App />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,7 +1,7 @@
 import date from "date-and-time";
+const format = date.format;
 
-function formatedDate(start, end) {
-  const { format } = date;
+export default function (start, end) {
   //
   start = new Date(start ?? 0);
   end = new Date(end ?? 0);
@@ -20,5 +20,3 @@ function formatedDate(start, end) {
   //
   else return format(start, "D MMM YYYY");
 }
-
-export { formatedDate };

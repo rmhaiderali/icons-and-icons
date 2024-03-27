@@ -1,16 +1,15 @@
-import "dotenv/config.js";
-import "./utils/ensureEnv.js";
-import "./config/database.js";
-import "./utils/cronJobs.js";
-import ViteExpress from "vite-express";
+import express from "express";
 import app from "./app.js";
+import getViteConfig from "./utils/getViteConfig.js";
+import { expressMiddleware as multipageFallback } from "multipage-fallback";
 
-app.use(ViteExpress.static());
+const server = express();
 
-const PORT = process.env.PORT || 3005;
+server.use(app, express.static("dist"), multipageFallback());
 
-const server = app.listen(PORT, () =>
-  console.log("server listening on port " + PORT)
+const viteConfig = await getViteConfig();
+const PORT = process.env.PORT || viteConfig.server.port;
+
+server.listen(PORT, () =>
+  console.log("server started: http://localhost:" + PORT)
 );
-
-ViteExpress.bind(app, server);

@@ -27,5 +27,5 @@ const THFSchema = new Schema(
   { versionKey: false }
 );
 
-const THF = mongoose.model("thf", THFSchema);
-export default THF;
+delete mongoose.connection.models["thf"];
+export default mongoose.model("thf", THFSchema);

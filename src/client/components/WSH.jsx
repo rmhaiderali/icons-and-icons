@@ -1,17 +1,35 @@
-import { useState, useContext } from "react";
-import ScrollingTitle from "./ScrollingTitle";
-import Context from "./Context";
+import { useState } from "react";
 import date from "date-and-time";
 import { DateTime } from "luxon";
+import ScrollingTitle from "./ScrollingTitle";
+import { wallpaperSize } from "../constants/wsh";
+import downloadAsFetch from "../common/downloadFile";
+import formatString from "../../server/utils/formatString";
+import Button from "./Button";
 
 export default function (props) {
-  const { wallpaperSize } = useContext(Context);
+  const offsetInHours = (offsetInMinutes) => {
+    const Hours24 = Math.abs((24 - Math.floor(offsetInMinutes / 60)) % 24)
+      .toString()
+      .padStart(2, "0");
 
-  const href = () => {
-    const formatedDate = DateTime.fromISO(props.Date, { setZone: true })
-      .setZone("US/Pacific", { keepLocalTime: true })
-      .toFormat("\"yyyyMMdd_ZZZ\"")
-      .replace(/\+|-/, "");
+    const Minutes = Math.abs(offsetInMinutes % 60)
+      .toString()
+      .padStart(2, "0");
+
+    const final = Hours24 + Minutes;
+
+    return isNaN(final) ? null : final;
+  };
+
+  const getBingUrl = () => {
+    const date = DateTime.fromISO(props.Date, { setZone: true })
+      //
+      .setZone("US/Pacific", { keepLocalTime: true });
+
+    const formatedDate = JSON.stringify(
+      date.toFormat("yyyyMMdd_") + offsetInHours(date.offset)
+    );
 
     const url = "https://www.bing.com/search?q=" + props.Query.toLowerCase();
 
@@ -39,29 +57,6 @@ export default function (props) {
   // }
 
   const [isDownloaded, setIsDownloaded] = useState(false);
-
-  const download = async () => {
-    setIsDownloaded(true);
-    try {
-      const response = await fetch(
-        `https://th.bing.com/th?id=OHR.${props.JPG}_${wallpaperSize}.jpg`
-      );
-      const b = await response.blob();
-      const e = document.createElement("a");
-      e.href = URL.createObjectURL(b);
-      e.download = props.JPG + ".jpg";
-      e.style.display = "none";
-      document.body.appendChild(e);
-      e.click();
-      document.body.removeChild(e);
-    } catch {
-      window.alert(
-        "Failed to download image " +
-          (props.Caption !== null ? props.Caption : props.Title) +
-          "."
-      );
-    }
-  };
 
   // zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
   // const [liked, setLiked] = useState(
@@ -102,7 +97,7 @@ export default function (props) {
           title={props.Caption !== null ? props.Caption : props.Title}
           href={(props.Query.includes("https")
             ? props.Query
-            : href()
+            : getBingUrl()
           ).replaceAll(" ", "+")}
         />
       </div>
@@ -116,7 +111,7 @@ export default function (props) {
           {/* <div
             className={"btn b2" + (liked ? " active" : "")}
             onClick={setLike}
-            onKeyPress={(e) => e.key === "Enter" && setLike()}
+            onKeyDown={(e) => e.key === "Enter" && this.onClick()}
             tabIndex="0"
           >
             <a>
@@ -124,8 +119,7 @@ export default function (props) {
                 <path
                   d={
                     liked
-                      ? "M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12z"
-                      : "M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"
+                      ? 
                   }
                 />
               </svg>
@@ -134,24 +128,25 @@ export default function (props) {
           </div> */}
           {/* zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz */}
           {props.JPG && (
-            <div
-              className={"btn b1" + (isDownloaded ? " active" : "")}
-              onClick={download}
-              onKeyPress={(e) => e.key === "Enter" && download()}
-              tabIndex="0"
-            >
-              <a>
-                <svg viewBox="0 0 16 16">
-                  <path
-                    d={
-                      isDownloaded
-                        ? "M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"
-                        : "M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"
-                    }
-                  />
-                </svg>
-              </a>
-            </div>
+            <Button
+              buttonType={"download"}
+              isActive={isDownloaded}
+              handler={() =>
+                downloadAsFetch(
+                  formatString(
+                    "https://th.bing.com/th?id=OHR.{0}_{1}.jpg",
+                    props.JPG,
+                    wallpaperSize
+                  ),
+                  formatString(
+                    "Failed to download image {0}.",
+                    props.Caption ?? props.Title
+                  ),
+                  props.JPG + ".jpg",
+                  setIsDownloaded
+                )
+              }
+            />
           )}
         </div>
         <img

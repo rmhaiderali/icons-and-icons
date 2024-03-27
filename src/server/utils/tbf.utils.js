@@ -10,7 +10,7 @@ function format(result, property, boldKeys = false) {
           .replaceAll("},\n{", line)
           .replaceAll(/\n(\[|\]|\{|\})/g, "")
           .replaceAll(/\n\"/g, boldKeys ? "\n*" : "\n")
-          .replaceAll("\":", boldKeys ? "*:" : ":")
+          .replaceAll('":', boldKeys ? "*:" : ":")
           .replaceAll(/\,\n/g, "\n")
           .replaceAll(/\\|\"|\[\n/g, ""),
       ]);
