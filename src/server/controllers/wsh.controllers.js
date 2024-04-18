@@ -1,3 +1,4 @@
+import Promise from "bluebird";
 import date from "date-and-time";
 import remote from "../utils/remote.js";
 import WSH from "../models/wsh.models.js";
@@ -151,6 +152,10 @@ function save(req, res) {
     req.headers.yesterday === "Y" ? new Date(Date.now() - 79200000) : new Date()
   ).toLocaleString("en-PK", { timeZone: "Etc/GMT-14" }); // DD/MM/YYYY
 
+  const concurrency = req.headers.concurrency?.match(/^\d+$/)
+    ? +req.headers.concurrency
+    : allCountries.length;
+
   const count = new Proxy([], {
     set: function (target, property, value, receiver) {
       target[property] = value;
@@ -172,9 +177,12 @@ function save(req, res) {
     res.send({ response: msgs.join(" ") });
   };
 
+  const url =
+    "https://www.bing.com/DSB?clientDateTime={0}%2F{1}%2F{2}&cc={3}&dsbschemaversion=1.1";
+
   async function download(day, month, year, country) {
-    const url =
-      "https://www.bing.com/DSB?clientDateTime={0}%2F{1}%2F{2}&cc={3}&dsbschemaversion=1.1";
+    console.log("start " + country);
+    console.time(country);
 
     const result = await fetch(formatString(url, month, day, year, country), {
       headers: { "User-Agent": userAgent },
@@ -198,15 +206,20 @@ function save(req, res) {
       SVG: { Light: fs.LightGleamId, Dark: fs.DarkGleamId },
       Regions: country,
     });
+
+    console.timeEnd(country);
   }
 
-  countries.forEach((country) =>
-    download(
-      requestDate.slice(0, 2),
-      requestDate.slice(3, 5),
-      requestDate.slice(6, 10),
-      country
-    )
+  Promise.map(
+    countries,
+    (country) =>
+      download(
+        requestDate.slice(0, 2),
+        requestDate.slice(3, 5),
+        requestDate.slice(6, 10),
+        country
+      ),
+    { concurrency }
   );
 }
 
