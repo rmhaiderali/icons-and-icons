@@ -141,7 +141,7 @@ async function main(req, res) {
 }
 
 function save(req, res) {
-  if (req.headers.key != process.env.KEY)
+  if (req.headers.authorization !== "Bearer " + process.env.CRON_SECRET)
     return res.send({ response: "unauthorized access" });
 
   const countries = req.headers.countries

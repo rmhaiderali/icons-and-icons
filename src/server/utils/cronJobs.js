@@ -3,7 +3,7 @@ import chalk from "chalk";
 
 async function saveTBL() {
   const result = await fetch("http://127.0.0.1:3005/api/v1/tbl/save", {
-    headers: { key: process.env.KEY },
+    headers: { authorization: "Bearer " + process.env.CRON_SECRET },
     method: "POST",
   });
   console.log(chalk.magenta("=> cron response"));
@@ -12,7 +12,7 @@ async function saveTBL() {
 
 async function saveWSH() {
   const result = await fetch("http://127.0.0.1:3005/api/v1/wsh/save", {
-    headers: { key: process.env.KEY },
+    headers: { authorization: "Bearer " + process.env.CRON_SECRET },
     method: "POST",
   });
   console.log(chalk.magenta("=> cron response"));

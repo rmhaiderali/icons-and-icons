@@ -1,7 +1,7 @@
 import chalk from "chalk";
 
 const envs = [
-  "KEY",
+  "CRON_SECRET",
   "CRON", // Y/N
   "WSH_LOG", // Y/N [0: "items request" 1: "save request"]
   "TBF_LOG", // Y/N [0: "items request" 1: "save request"]

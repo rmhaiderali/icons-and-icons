@@ -169,7 +169,7 @@ async function main(req, res) {
 }
 
 async function save(req, res) {
-  if (req.headers.key !== process.env.KEY) {
+  if (req.headers.authorization !== "Bearer " + process.env.CRON_SECRET) {
     return res.send({ resonse: "unauthorized access" });
   }
 
