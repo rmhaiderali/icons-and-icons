@@ -8,7 +8,7 @@ export default defineConfig({
   appType: "mpa",
   server: { port: 3005 },
   plugins: [
-    useExpressInVite("/src/server/app.js"),
+    useExpressInVite("/src/server/router.js", true),
     multipageFallback(),
     react(),
   ],

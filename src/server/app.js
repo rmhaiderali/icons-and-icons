@@ -1,20 +1,9 @@
-"use strict";
-import "dotenv/config.js";
-import "./utils/ensureEnv.js";
-import "./utils/cronJobs.js";
-import "./config/database.js";
-
 import express from "express";
-import TBLRoutes from "./routes/tbl.routes.js";
-import THFRoutes from "./routes/thf.routes.js";
-import WSHRoutes from "./routes/wsh.routes.js";
+import router from "./router.js";
+import { expressMiddleware as multipageFallback } from "multipage-fallback";
 
-const app = express.Router();
+const app = express();
 
-app.use(express.json());
-
-app.use("/api/v1/tbl", TBLRoutes);
-app.use("/api/v1/thf", THFRoutes);
-app.use("/api/v1/wsh", WSHRoutes);
+app.use(router, express.static("dist"), multipageFallback());
 
 export default app;

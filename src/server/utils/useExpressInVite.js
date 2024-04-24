@@ -1,12 +1,12 @@
 import express from "express";
 
-export default function useExpressInVite(entry) {
+export default function useExpressInVite(entry, isRouter = false) {
   return {
     name: "expressAppMiddleware",
     configureServer: async (server) => {
       async function expressAppMiddleware(req, res, next) {
         const app = await server.ssrLoadModule(entry);
-        express().use(server.config.base, app["default"])(req, res, next);
+        (isRouter ? express().use(app.default) : app.default)(req, res, next);
       }
 
       server.middlewares.use(expressAppMiddleware);
